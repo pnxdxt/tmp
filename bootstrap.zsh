@@ -34,7 +34,7 @@ download() {
 declare -r GITHUB_REPOSITORY="pnxdxt/tmp"
 declare -r DOTFILES_UTILS_URL="https://raw.githubusercontent.com/$GITHUB_REPOSITORY/main/utils.zsh"
 declare -r DOTFILES_TARBALL_URL="https://github.com/$GITHUB_REPOSITORY/tarball/main"
-declare dotfilesDirectory="$HOME/.dotfiles"
+declare dotfilesDirectory="$HOME/tmp/.dotfiles"
 declare skipQuestions=false
 
 main() {
@@ -50,7 +50,7 @@ main() {
 	ask_for_sudo
 
 	# download dotfiles
-	echo_warn "• Download and extract archive\n\n"
+	echo_warn "• Download and extract archive"
 	tmpFile="$(mktemp /tmp/XXXXX)"
 	download "$DOTFILES_TARBALL_URL" "$tmpFile"
 	print_result $? "Download archive" "true"
@@ -100,6 +100,11 @@ main() {
 	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 	rm -rf "$tmpFile"
 	print_result $? "Remove archive"
+
+	# Change to the `dotfiles` directory
+	cd "$dotfilesDirectory" || exit 1
+	echo "$(pwd)"
+	echo "$(ls -a)"
 }
 
 main "$@"

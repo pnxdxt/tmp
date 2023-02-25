@@ -5,7 +5,7 @@ echo_error() { echo '\033[1;31mERROR: '"$1"'\033[0m'; }
 
 print_result() {
 	if [ "$1" -eq 0 ]; then
-		echo_ok "✓ $2"
+		echo_ok "$2"
 	else
 		echo_error "$2"
 		[ "$3" == "true" ] && exit 1
@@ -48,10 +48,27 @@ answer_is_yes() {
 }
 
 ask() {
-	print_question "$1"
+	echo_warn "$1"
 	read -r
 }
 
 get_answer() {
 	printf "%s" "$REPLY"
+}
+
+extract() {
+	local archive="$1"
+	local outputDir="$2"
+
+	if command -v "tar" &>/dev/null; then
+		tar \
+			--extract \
+			--gzip \
+			--file "$1" \
+			--strip-components 1 \
+			--directory "$2"
+		return $?
+	fi
+
+	return 1
 }
