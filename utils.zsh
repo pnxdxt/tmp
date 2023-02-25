@@ -1,13 +1,51 @@
 # helpers
-echo_ok() { echo '\033[1;32m'"$1"'\033[0m'; }
-echo_warn() { echo '\033[1;33m'"$1"'\033[0m'; }
-echo_error() { echo '\033[1;31mERROR: '"$1"'\033[0m'; }
+print_in_color() {
+	printf "%b" "$(tput setaf "$2" 2>/dev/null)" "$1" "$(tput sgr0 2>/dev/null)"
+}
+
+print_in_green() {
+	print_in_color "$1" 2
+}
+
+print_in_purple() {
+	print_in_color "$1" 5
+}
+
+print_in_red() {
+	print_in_color "$1" 1
+}
+
+print_in_yellow() {
+	print_in_color "$1" 3
+}
+
+print_question() {
+	print_in_yellow "   [?] $1"
+}
+
+print_success() {
+	print_in_green "   [✔] $1\n"
+}
+
+print_warning() {
+	print_in_yellow "   [!] $1\n"
+}
+
+print_error() {
+	print_in_red "   [✖] $1 $2\n"
+}
+
+print_error_stream() {
+	while read -r line; do
+		print_error "↳ ERROR: $line"
+	done
+}
 
 print_result() {
 	if [ "$1" -eq 0 ]; then
-		echo_ok "$2"
+		print_success "$2"
 	else
-		echo_error "$2"
+		print_error "$2"
 		[ "$3" == "true" ] && exit 1
 	fi
 }
@@ -38,7 +76,7 @@ skip_questions() {
 }
 
 ask_for_confirmation() {
-	echo_warn "$1 (y/n)"
+	print_question "$1 (y/n)"
 	read -r -n 1
 	printf "\n"
 }
@@ -48,7 +86,7 @@ answer_is_yes() {
 }
 
 ask() {
-	echo_warn "$1"
+	print_question "$1"
 	read -r
 }
 

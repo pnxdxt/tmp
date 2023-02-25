@@ -50,7 +50,7 @@ main() {
 	ask_for_sudo
 
 	# download dotfiles
-	echo_warn "• Download and extract archive"
+	print_in_purple "• Download and extract archive\n"
 	tmpFile="$(mktemp /tmp/XXXXX)"
 	download "$DOTFILES_TARBALL_URL" "$tmpFile"
 	print_result $? "Download archive" "true"
