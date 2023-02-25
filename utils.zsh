@@ -76,12 +76,13 @@ skip_questions() {
 }
 
 ask_for_confirmation() {
-	print_question "$1 (y/n)"
+	print_question "$1 (y/n) "
 	read -r -n 1
 	printf "\n"
 }
 
 answer_is_yes() {
+	echo "REPLY: $REPLY"
 	[[ "$REPLY" =~ ^[Yy]$ ]] && return 0 || return 1
 }
 
