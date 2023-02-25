@@ -2,30 +2,30 @@
 
 # Check if running macOS
 if ! [[ "$OSTYPE" =~ darwin* ]]; then
-  echo "Sorry, this is meant to be run on macOS only"
-  exit
+	echo "Sorry, this is meant to be run on macOS only"
+	exit
 fi
 
 download() {
 	local url="$1"
 	local output="$2"
 	echo url: "$url"
-	if command -v "curl" &> /dev/null; then
+	if command -v "curl" &>/dev/null; then
 		curl \
 			--location \
 			--silent \
 			--show-error \
 			--output "$output" \
 			"$url" \
-				&> /dev/null
-	return $?
+			&>/dev/null
+		return $?
 
-	elif command -v "wget" &> /dev/null; then
+	elif command -v "wget" &>/dev/null; then
 		wget \
 			--quiet \
 			--output-document="$output" \
 			"$url" \
-				&> /dev/null
+			&>/dev/null
 		return $?
 	fi
 	return 1
@@ -85,21 +85,21 @@ main() {
 		done
 
 		printf "\n"
-    else
-			rm -rf "$dotfilesDirectory" &> /dev/null
-    fi
+	else
+		rm -rf "$dotfilesDirectory" &>/dev/null
+	fi
 
-    mkdir -p "$dotfilesDirectory"
-    print_result $? "Create '$dotfilesDirectory'" "true"
+	mkdir -p "$dotfilesDirectory"
+	print_result $? "Create '$dotfilesDirectory'" "true"
 
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    # Extract archive in the `dotfiles` directory.
-    extract "$tmpFile" "$dotfilesDirectory"
-    print_result $? "Extract archive" "true"
+	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	# Extract archive in the `dotfiles` directory.
+	extract "$tmpFile" "$dotfilesDirectory"
+	print_result $? "Extract archive" "true"
 
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    rm -rf "$tmpFile"
-    print_result $? "Remove archive"
+	# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	rm -rf "$tmpFile"
+	print_result $? "Remove archive"
 }
 
 main "$@"

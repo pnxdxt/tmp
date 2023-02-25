@@ -15,9 +15,13 @@ print_result() {
 ask_for_sudo() {
 	if test ! "$(command -v sudo)"; then
 		echo "The Script Require Root Access. Please Enter Your Password."
-    sudo -v &> /dev/null
-    # https://gist.github.com/cowboy/3118588
-		while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+		sudo -v &>/dev/null
+		# https://gist.github.com/cowboy/3118588
+		while true; do
+			sudo -n true
+			sleep 60
+			kill -0 "$$" || exit
+		done 2>/dev/null &
 		echo "Done!"
 	fi
 }
@@ -25,8 +29,8 @@ ask_for_sudo() {
 skip_questions() {
 	while :; do
 		case $1 in
-			-y|--yes) return 0;;
-				*) break;;
+		-y | --yes) return 0 ;;
+		*) break ;;
 		esac
 		shift 1
 	done
@@ -34,16 +38,20 @@ skip_questions() {
 }
 
 ask_for_confirmation() {
-    echo_warn "$1 (y/n)"
-    read -r -n 1
-    printf "\n"
+	echo_warn "$1 (y/n)"
+	read -r -n 1
+	printf "\n"
 }
 
-answer_is_yes() {	[[ "$REPLY" =~ ^[Yy]$ ]] && return 0 || return 1 }
+answer_is_yes() {
+	[[ "$REPLY" =~ ^[Yy]$ ]] && return 0 || return 1
+}
 
 ask() {
-    print_question "$1"
-    read -r
+	print_question "$1"
+	read -r
 }
 
-get_answer() { printf "%s" "$REPLY" }
+get_answer() {
+	printf "%s" "$REPLY"
+}
