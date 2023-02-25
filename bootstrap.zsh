@@ -15,4 +15,49 @@ if test ! "$(command -v sudo)"; then
 fi
 
 echo "Hello world"
-echo ${(%):-%N}
+cd ~ || exit 1
+
+declare -r DOTFILES_UTILS_URL="https://raw.githubusercontent.com/pnxdxt/tmp/main/utils.zsh"
+
+download() {
+	local url="$1"
+	local output="$2"
+	if command -v "curl" &> /dev/null; then
+		curl \
+			--location \
+			--silent \
+			--show-error \
+			--output "$output" \
+			"$url" \
+				&> /dev/null
+	return $?
+
+	elif command -v "wget" &> /dev/null; then
+		wget \
+			--quiet \
+			--output-document="$output" \
+			"$url" \
+				&> /dev/null
+		return $?
+	fi
+	return 1
+}
+
+
+download_utils() {
+	local tmpFile="$(mktemp /tmp/XXXXX)"
+	download "$DOTFILES_UTILS_URL" "$tmpFile" \
+			&& . "$tmpFile" \
+			&& rm -rf "$tmpFile" \
+			&& return 0
+
+	return 1
+}
+
+# Load utils
+if [ -x "utils.sh" ]; then
+	echo "utils.sh exists"
+	. "utils.sh" || exit 1
+else
+	download_utils || exit 1
+fi
