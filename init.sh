@@ -31,7 +31,7 @@ download_git_output_processor() {
 	url="https://raw.githubusercontent.com/${ZINIT_REPO}/${ZINIT_COMMIT:-${ZINIT_BRANCH}}/share/git-process-output.zsh"
 	script_path="${ZINIT_TMPDIR}/git-process-output.zsh"
 
-	echo_info "Fetching git-process-output.zsh from $url"
+	echo "Fetching git-process-output.zsh from $url"
 	if command -v curl >/dev/null 2>&1; then
 		curl -fsSL -o "$script_path" "$url"
 	elif command -v wget >/dev/null 2>&1; then
@@ -156,7 +156,7 @@ fi
 
 CONFIG_REPO="pnxdxt/zsh-config"
 CONFIG_REPO_DIR_NAME=".zsh-config"
-CONFIG_BRANCH="main"
+CONFIG_BRANCH="master"
 CONFIG_DIR="$HOME/${CONFIG_REPO_DIR_NAME}"
 
 config_dir
