@@ -122,12 +122,12 @@ config_install() {
 		}
 	} 2>/dev/null
 
-	zinit_checkout_ref
+	config_checkout_ref
 
-	if [ -d "${ZINIT_REPO_DIR_NAME}" ]; then
-		echo "Zinit succesfully installed"
+	if [ -d "${CONFIG_REPO_DIR_NAME}" ]; then
+		echo "Config succesfully installed"
 	else
-		echo "Failed to install Zinit"
+		echo "Failed to install config"
 	fi
 }
 
